@@ -6,22 +6,22 @@
 #    By: mwagner <mwagner@student.42wolfsburg.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/20 13:58:26 by mwagner           #+#    #+#              #
-#    Updated: 2023/06/23 14:05:56 by mwagner          ###   ########.fr        #
+#    Updated: 2023/07/13 20:36:02 by mwagner          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 VAL 		:= valgrind -s --leak-check=full --show-leak-kinds=all
-RUN 		:= ./easy_find
+RUN 		:= ./btc
 
 GREEN 		:= \033[0;32m
 RED 		:= \033[0;31m
 RESET_COL 	:= \033[0m
 
-NAME 		:= easy_find
-CC 		:= c++
+NAME 		:= btc
+CC 			:= c++
 CFLAGS 		:= -Wall -Werror -Wextra -std=c++98
 SRC 		:=	main.cpp \
-			EasyFind.cpp
+				BitcoinExchange.cpp
 
 all: $(NAME)
 

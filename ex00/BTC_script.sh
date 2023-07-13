@@ -86,7 +86,7 @@ rm -f input.txt
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Oliver inputs... \n${Color_Off}"
+printf "${BYellow} Test inputs... \n${Color_Off}"
 touch input.txt
 echo "date | value
 2011-01-03 | 3
