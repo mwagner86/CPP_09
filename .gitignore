@@ -1,3 +1,7 @@
+# IDE Options
+.vscode/
+.idea/
+
 # Prerequisites
 *.d
 
@@ -30,3 +34,8 @@
 *.exe
 *.out
 *.app
+
+cmake-build-debug/
+btc
+RPN
+PmergeMe
