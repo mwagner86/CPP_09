@@ -24,8 +24,4 @@
 #define COLOR_PURPLE "\033[38;5;105m"
 #define COLOR_ORANGE "\033[38;5;208m"
 
-# ifndef VERBOSE
-#  define VERBOSE 0
-# endif
-
 #endif // EX00_COLORS_H

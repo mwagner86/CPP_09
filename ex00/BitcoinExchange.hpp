@@ -14,14 +14,20 @@
 #ifndef EX00_BITCOINEXCHANGE_HPP
 #define EX00_BITCOINEXCHANGE_HPP
 
+# ifndef DATABASE
+# define DATABASE "data.csv"
+# endif
+
+# ifndef VERBOSE
+#  define VERBOSE 0
+# endif
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
 #include <map>
-
-
 
 class BitcoinExchange {
 
@@ -37,16 +43,15 @@ private:
 	std::map<std::string, std::string> exchangeRates;
 
 	void initMapData();
-	void processInputFile(const std::string& filename);
+	void parseFile(const std::string& filename);
 
-	bool isVerticalBar(std::string line);
-	bool isValidNumber(std::string line);
-	bool isPosNumber(std::string line);
-	bool isTooLargeNumber(std::string numline);
-	bool checkFormatAndDate(std::string line);
-	bool isValidDayOfMonth(std::string dateString);
-	bool isLeapYear(unsigned int year);
+	static bool isVerticalBar(std::string line);
+	static bool isValidNumber(const std::string &line);
+	static bool isPosNumber(const std::string &line);
+	static bool isTooLargeNumber(const std::string &num);
+	static bool checkFormatAndDate(std::string line);
+	static bool isValidDate(const std::string &dateString);
+	static bool isLeapYear(unsigned int year);
 };
-
 
 #endif //EX00_BITCOINEXCHANGE_HPP
