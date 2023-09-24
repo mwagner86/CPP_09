@@ -59,43 +59,49 @@ void BitcoinExchange::processInputFile(const std::string& filename) {
 	std::string line;
 	std::ifstream infile;
 	std::string date;
+
 	infile.open(filename.c_str(), std::fstream::in);
-	if (infile.is_open()) {
-		while (std::getline(infile, line)) {
-			if (line == "date | value")
-				continue;
-			if (!isVerticalBar(line))
-				continue;
-			if (!isValidNumber(line))
-				continue;
-			if (!checkFormatAndDate(line))
-				continue;
-			date = line.substr(0,10);
-			// check if entry with date does exist, i.e. lowerbound != upperbound); if lowerbound == upperbound
-			// take date before the actual date (also if iterator is the end == date after last date in database)
-			if (exchangeRates.lower_bound(date) != exchangeRates.end()) {
-				if (exchangeRates.lower_bound(line.substr(0,10))->first == exchangeRates.upper_bound(line.substr(0,10))->first)
-					date = (--exchangeRates.upper_bound(line.substr(0,10)))->first;
-			} else {
-				date = (--exchangeRates.end())->first;
-			}
-			//std::cout << "===> Date after check:       " << date << std::endl;
-			rate = atof(exchangeRates.lower_bound(date)->second.c_str());
-			std::cout << line << " => ";
-			std::cout << std::fixed << std::setprecision(2) << (rate * atof(line.substr(13).c_str()));
-			std::cout << std::endl;
-		}
-	}
-	else {
+
+	if (!infile.is_open()) {
 		std::cerr << COLOR_RED << "Error: Could not open evaluation file.\n" << COLOR_DEFAULT << std::endl;
-		infile.close(); // Close the file before exiting
+		infile.close();
+		return;  // Exit the function early because the file couldn't be opened.
 	}
+	// Check if the file is empty
+	if (infile.peek() == std::ifstream::traits_type::eof()) {
+		std::cerr << COLOR_RED << "Error: The file is empty.\n" << COLOR_DEFAULT << std::endl;
+		infile.close();
+		return;  // Exit the function early because the file is empty.
+	}
+	while (std::getline(infile, line)) {
+		if (line == "date | value")
+			continue;
+		if (!isVerticalBar(line))
+			continue;
+		if (!isValidNumber(line))
+			continue;
+		if (!checkFormatAndDate(line))
+			continue;
+		date = line.substr(0, 10);
+		// check if entry with date does exist, i.e. lowerbound != upperbound); if lowerbound == upperbound
+		// take date before the actual date (also if iterator is the end == date after last date in database)
+		if (exchangeRates.lower_bound(date) != exchangeRates.end()) {
+			if (exchangeRates.lower_bound(line.substr(0, 10))->first == exchangeRates.upper_bound(line.substr(0, 10))->first)
+				date = (--exchangeRates.upper_bound(line.substr(0, 10)))->first;
+		} else
+			date = (--exchangeRates.end())->first;
+		rate = atof(exchangeRates.lower_bound(date)->second.c_str());
+		std::cout << line << " => ";
+		std::cout << std::fixed << std::setprecision(2) << rate * atof(line.substr(13).c_str());
+		std::cout << std::endl;
+	}
+	infile.close();
 }
 
 bool BitcoinExchange::isVerticalBar(std::string line) {
 	if (line.find('|') == std::string::npos || line.find('|') != line.rfind('|') ||
 		line.size() < 14 || line.at(11) != '|') {
-		std::cout << "Error: bad input => " << line << std::endl;
+		std::cout << COLOR_YELLOW "Error: Wrong format => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	return true;
@@ -104,8 +110,8 @@ bool BitcoinExchange::isVerticalBar(std::string line) {
 bool BitcoinExchange::isValidNumber(std::string line) {
 	size_t i = line.find('|');
 	std::string numString = line.substr(++i);
-	if (numString.size() <= 0 || numString.at(0) != ' ') {
-		std::cout << "Error: Line must have format \"YYYY-MM-DD | value\" => " << line << std::endl;
+	if (numString.empty() || numString.at(0) != ' ') {
+		std::cout << COLOR_YELLOW << "Error: Line must have format \"YYYY-MM-DD | value\" => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	// check for right characters!!
@@ -120,7 +126,7 @@ bool BitcoinExchange::isPosNumber(std::string line) {
 	size_t numStart = line.find('|');
 	numStart += 2;
 	if (line.substr(numStart).find('-') != std::string::npos) {
-		std::cout << "Error: not a positive number." << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Number not positive" << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	return true;
@@ -128,29 +134,29 @@ bool BitcoinExchange::isPosNumber(std::string line) {
 
 bool BitcoinExchange::isTooLargeNumber(std::string numline) {
 	if (atof(numline.c_str()) > 1000.0) {
-		std::cout << "Error: too large a number." << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Number too large" << COLOR_DEFAULT << std::endl;
 		return true;
 	}
 	return false;
 }
 
 bool BitcoinExchange::checkFormatAndDate(std::string line) {
-	// Das Bitcoin-Netzwerk entstand am 3. Januar 2009 mit der Schöpfung der ersten 50 Bitcoin und der Generierung von „Block 0“, dem sogenannten Genesisblock. (Wikipedia)
+	// First Bitcoin January 3rd 2009
 	line +="";
 	if (line.size() < 11 || line.at(10) != ' ' || line.at(4) != '-' || line.at(7) != '-') {
-		std::cout << "Error: Line must have format \"YYYY-MM-DD | value\" => " << line << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Line must have format \"YYYY-MM-DD | value\" => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	if ( atoi(line.substr(0,4).c_str()) < 2009) {
-		std::cout << "Error: Invalid year (must be later than 2008 and of format YYYY) => " << line << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Invalid year. Later than 2008 and of format YYYY => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	if (line.substr(0,10) == "2009-01-01" || line.substr(0,10) == "2009-01-02") {
-		std::cout << "Error: Invalid date, first bitcoins were created on January 3rd, 2009 => " << line << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Invalid date. First Bitcoin January 3rd 2009 => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	if (atoi(line.substr(5,2).c_str()) < 1 || atoi(line.substr(5,2).c_str()) > 12) {
-		std::cout << "Error: Invalid month (must be 01 .. 12 and of format MM) => " << line << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Invalid month. Between 01 and 12 and of format MM => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
 	if (!isValidDayOfMonth(line.substr(0,10)))
@@ -179,7 +185,7 @@ bool BitcoinExchange::isValidDayOfMonth(std::string dateString) {
 			result = false;
 	}
 	if (result == false)
-		std::cout << "Error: date does not exist => " << dateString << std::endl;
+		std::cout << COLOR_YELLOW << "Error: Invalid Date => " << dateString << COLOR_DEFAULT << std::endl;
 	return result;
 }
 
