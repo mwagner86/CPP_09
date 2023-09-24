@@ -14,46 +14,46 @@ Color_Off='\033[0m'       # Text Reset
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Making program...\n${Color_Off}"
+printf "${BGreen} Making program...\n${Color_Off}"
 make re
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Run no arguments... \n${Color_Off}"
+printf "${BRed} Run without arguments... \n${Color_Off}"
 ./btc
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Empty file... \n${Color_Off}"
+printf "${BRed} Empty file... \n${Color_Off}"
 touch empty.txt
 ./btc empty.txt
-printf "${BYellow} Wrong file name... \n${Color_Off}"
-./btc mpty.txt
+printf "${BRed} Wrong file name... \n${Color_Off}"
+./btc wrong.txt
 rm -f empty.txt
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Negtive number... \n${Color_Off}"
-touch negtivenumber.txt
+printf "${BYellow} Negative number... \n${Color_Off}"
+touch negative_numbers.txt
 echo "date | value
 2017-02-19 | -2
 2017-02-22 | -130.01
 2017-02-25 | -10.37
-2017-02-28 | -999" > negtivenumber.txt
-./btc negtivenumber.txt
-rm -f negtivenumber.txt
+2017-02-28 | -999" > negative_numbers.txt
+./btc negative_numbers.txt
+rm -f negative_numbers.txt
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Number larger than 1000... \n${Color_Off}"
-touch toolarge.txt
+printf "${BYellow} Numbers larger than 1000... \n${Color_Off}"
+touch too_large.txt
 echo "date | value
 2017-02-19 | 1050.87
 2017-02-22 | 1130.01
 2017-02-25 | 1150.37
-2017-02-28 | 1190.89" > toolarge.txt
-./btc toolarge.txt
-rm -f toolarge.txt
+2017-02-28 | 1190.89" > too_large.txt
+./btc too_large.txt
+rm -f too_large.txt
 
 # -------------------------------------------------------------
 
@@ -69,7 +69,7 @@ rm -f invalid_date.txt
 
 # -------------------------------------------------------------
 
-printf "${BYellow} PDF inputs... \n${Color_Off}"
+printf "${BBlue} Subject input.txt... \n${Color_Off}"
 touch input.txt
 echo "date | value
 2011-01-03 | 3
@@ -86,7 +86,7 @@ rm -f input.txt
 
 # -------------------------------------------------------------
 
-printf "${BYellow} Test inputs... \n${Color_Off}"
+printf "${BBlue} Test inputs... \n${Color_Off}"
 touch input.txt
 echo "date | value
 2011-01-03 | 3
