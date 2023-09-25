@@ -1,6 +1,14 @@
-//
-// Created by max on 9/25/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   RPN.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mwagner <mwagner@student.42wolfsburg.de>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/25 12:40:19 by mwagner           #+#    #+#             */
+/*   Updated: 2023/09/25 12:42:56 by mwagner          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "RPN.hpp"
 
@@ -129,9 +137,9 @@ int	RPN::operate()
 		return (-1);
 	}
 	int	second_op = (int)this->_operand.top();
-	this->_operand.pop();     // remove element from top of stack.
+	this->_operand.pop();
 	int	first_op = (int)this->_operand.top();
-	this->_operand.pop();     // remove element from top of stack.
+	this->_operand.pop();
 	if (this->_operator.top() == '+')	{
 		this->_operand.push(first_op + second_op);
 		this->_operator.pop();
@@ -152,5 +160,5 @@ int	RPN::operate()
 }
 
 void	RPN::printResult()	{
-	std::cout << (this->_operand.top()) << std::endl; // only result is left in stack.
+	std::cout << (this->_operand.top()) << std::endl; // Result last element in stack.
 }
