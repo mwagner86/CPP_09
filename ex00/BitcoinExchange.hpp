@@ -45,10 +45,10 @@ private:
 	void initMapData();
 	void parseFile(const std::string& filename);
 
-	static bool isVerticalBar(std::string line);
-	static bool isValidNumber(const std::string &line);
-	static bool isPosNumber(const std::string &line);
-	static bool isTooLargeNumber(const std::string &num);
+	static bool verticalBar(std::string line);
+	static bool validNum(const std::string &line);
+	static bool posNum(const std::string &line);
+	static bool largeNum(const std::string &num);
 	static bool checkFormatAndDate(std::string line);
 	static bool isValidDate(const std::string &dateString);
 	static bool isLeapYear(unsigned int year);

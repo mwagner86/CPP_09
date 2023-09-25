@@ -84,9 +84,9 @@ void BitcoinExchange::parseFile(const std::string &filename) {
 	while (std::getline(infile, line)) {
 		if (line == "date | value")
 			continue;
-		if (!isVerticalBar(line))
+		if (!verticalBar(line))
 			continue;
-		if (!isValidNumber(line))
+		if (!validNum(line))
 			continue;
 		if (!checkFormatAndDate(line))
 			continue;
@@ -120,7 +120,7 @@ void BitcoinExchange::parseFile(const std::string &filename) {
 	infile.close();
 }
 
-bool BitcoinExchange::isVerticalBar(std::string line) {
+bool BitcoinExchange::verticalBar(std::string line) {
 	if (line.find('|') == std::string::npos || line.find('|') != line.rfind('|') ||
 		line.size() < 14 || line.at(11) != '|') {
 		std::cout << COLOR_YELLOW "Error: bad input => " << line << COLOR_DEFAULT << std::endl;
@@ -129,22 +129,21 @@ bool BitcoinExchange::isVerticalBar(std::string line) {
 	return true;
 }
 
-bool BitcoinExchange::isValidNumber(const std::string& line) {
+bool BitcoinExchange::validNum(const std::string& line) {
 	size_t i = line.find('|');
 	std::string numString = line.substr(++i);
 	if (numString.empty() || numString.at(0) != ' ') {
 		std::cout << COLOR_YELLOW << "Error: line must have format \"YYYY-MM-DD | value\" => " << line << COLOR_DEFAULT << std::endl;
 		return false;
 	}
-	// check for right characters!!
-	if (!isPosNumber(numString))
+	if (!posNum(numString))
 		return false;
-	if (isTooLargeNumber(numString))
+	if (largeNum(numString))
 		return false;
 	return true;
 }
 
-bool BitcoinExchange::isPosNumber(const std::string& line) {
+bool BitcoinExchange::posNum(const std::string& line) {
 	size_t numStart = line.find('|');
 	numStart += 2;
 	if (line.substr(numStart).find('-') != std::string::npos) {
@@ -154,7 +153,7 @@ bool BitcoinExchange::isPosNumber(const std::string& line) {
 	return true;
 }
 
-bool BitcoinExchange::isTooLargeNumber(const std::string &num) {
+bool BitcoinExchange::largeNum(const std::string &num) {
 	if (atof(num.c_str()) > 1000.0) {
 		std::cout << COLOR_YELLOW << "Error: too large a number" << COLOR_DEFAULT << std::endl;
 		return true;
