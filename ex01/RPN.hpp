@@ -39,10 +39,9 @@ private:
 	std::string			_input;
 
 	static int		isValidRPNExpression(const std::string& input);
-	int		operate(void);
-	void	printResult(void);
+	int		operate();
+	void	printResult();
 
 };
-
 
 #endif //EX01_RPN_HPP

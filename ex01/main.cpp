@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	if (argc != 2) {
 		std::cerr	<< COLOR_RED << "Error: Wrong input or no arguments.\n" << COLOR_DEFAULT
-					<< "Usage: ./RPN \"2 operands per operators\"" << std::endl;
+					<< "Usage: ./RPN \"2 operands per operator\"" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	else	{
