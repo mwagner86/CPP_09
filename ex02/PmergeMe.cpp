@@ -58,8 +58,11 @@ void PmergeMe::parseAndPopulate(char *sequence[], int n) {
 }
 
 void PmergeMe::performSorting() {
-	std::cout << "Before: ";
-	_printContainer();
+	std::cout << "Vector Container Before: ";
+	_printVectorContainer();
+
+	std::cout << "Deque Container Before: ";
+	_printDequeContainer();
 
 	std::clock_t start = std::clock();
 	std::clock_t start2 = std::clock();
@@ -74,8 +77,10 @@ void PmergeMe::performSorting() {
 	std::clock_t end2 = std::clock();
 	double durDeque = 100.0 * (end2 - start2) / CLOCKS_PER_SEC;
 
-	std::cout << "After: ";
-	_printContainer();
+	std::cout << "Vector Container After: ";
+	_printVectorContainer();
+	std::cout << "Deque Container After: ";
+	_printDequeContainer();
 
 	std::cout << "Time to process a range of " << _vector.size() << " elements with std::vector: " << durVector
 			  << " us" << std::endl;
@@ -83,9 +88,19 @@ void PmergeMe::performSorting() {
 			  << std::endl;
 }
 
-void PmergeMe::_printContainer() {
+void PmergeMe::_printVectorContainer() {
 	std::vector<int>::iterator it = _vector.begin();
 	std::vector<int>::iterator ite = _vector.end();
+	while (it != ite) {
+		std::cout << " " << *it;
+		++it;
+	}
+	std::cout << std::endl;
+}
+
+void PmergeMe::_printDequeContainer() {
+	std::deque<int>::iterator it = _deque.begin();
+	std::deque<int>::iterator ite = _deque.end();
 	while (it != ite) {
 		std::cout << " " << *it;
 		++it;

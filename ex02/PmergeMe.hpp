@@ -68,7 +68,8 @@ public:
 private:
 	std::vector<int> _vector;
 	std::deque<int> _deque;
-	void _printContainer();
+	void _printVectorContainer();
+	void _printDequeContainer();
 };
 
 #endif // EX02_PMERGEME_HPP
