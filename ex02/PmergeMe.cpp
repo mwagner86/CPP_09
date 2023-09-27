@@ -108,6 +108,7 @@ void PmergeMe::_printDequeContainer() {
 	std::cout << std::endl;
 }
 
+// Ford-Johnson (Merge-Insert) Sort algorithm
 template <typename T>
 void PmergeMe::mergeInsertSortContainer(T &container) {
 	const int size = container.size();
@@ -116,7 +117,7 @@ void PmergeMe::mergeInsertSortContainer(T &container) {
 		return; // Base case: Already sorted
 
 	if (size < THRESHOLD) {
-		// Insertion Sort for small containers
+		// Insertion Sort for small containers depending on threshold
 		for (typename T::iterator i = container.begin(); i != container.end(); ++i) {
 			for (typename T::iterator j = i; j != container.begin() && *(j - 1) > *j; --j) {
 				std::swap(*j, *(j - 1));
